@@ -1,3 +1,3 @@
 export interface Props {
-  page: string
+  page: 'signin' | 'signup'
 }

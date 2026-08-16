@@ -4,12 +4,13 @@ import Link from 'next/link'
 const SignIn = () => {
   return(
     <>
-      <h1>Вход</h1>
-      <Link href="/">Главная</Link>
-      <Form page='вход'/>
-      <div>
-        <span>еще не зарегистрированы?</span>
-        <Link href="/signup">регистрация</Link>
+      <div className='w-[100%] h-[100vh] flex flex-col items-center justify-center'>
+        <h1 className='mb-[40px] text-[30px] text-[white]'>Вход</h1>
+        <Form page='signin'/>
+        <div className='flex gap-[10px] text-[white]'>
+          <Link href="/signup">Регистрация</Link>
+          <Link href="/"> | Главная</Link>
+        </div>
       </div>
     </>
   )
