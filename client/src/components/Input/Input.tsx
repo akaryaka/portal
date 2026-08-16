@@ -1,7 +1,9 @@
-const Input = () => {
+import { Props } from "./Input.props"
+
+const Input = ({ placeholder }: Props) => {
   return(
     <>
-      <input type="text" placeholder="input"/>
+      <input className='border border-[1px #000] rounded-[5px] mb-[15px] p-[10px]' type="text" placeholder={placeholder} />
     </>
   )
 }

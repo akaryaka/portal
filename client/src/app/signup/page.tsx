@@ -1,4 +1,4 @@
-import Form from 'next/form'
+import Form from '@/components/Form/Form'
 import Link from 'next/link'
 
 const SignUp = () => {
@@ -6,12 +6,7 @@ const SignUp = () => {
     <>
       <h1>Регистрация</h1>
       <Link href="/">Главная</Link>
-      <Form action='/submit'>
-        <input type="text" placeholder='Логин' />
-        <input type="text" placeholder='Почта' />
-        <input type="text" placeholder='Пароль' />
-        <button>Зарегистрироваться</button>
-      </Form>
+      <Form page='регистрация'/>
       <div>
         <span>уже зарегистрированы?</span>
         <Link href="/signin">вход</Link>

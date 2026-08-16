@@ -1,7 +1,7 @@
 const Button = () => {
   return(
     <>
-      <button>Кнопка</button>
+      <button type="submit">Кнопка</button>
     </>
   )
 }
