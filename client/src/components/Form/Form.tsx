@@ -6,12 +6,12 @@ const Form = ({ page }: Props) => {
   return(
     <>
       <form className='w-[500px] mb-[20px] flex flex-col rounded-[5px] p-[50px] bg-[#ffffff]' action='/admin'>
-        <Input placeholder='Логин'/>
+        <Input className='mb-[15px]' placeholder='Логин'/>
         {page === 'signup' 
-          ? <Input placeholder='Почта'/> 
+          ? <Input className='mb-[15px]' placeholder='Почта'/> 
           : null
         }
-        <Input placeholder='Пароль'/>
+        <Input className='mb-[40px]' placeholder='Пароль'/>
         <Button>
           {page === 'signup'
           ? 'регистрация'

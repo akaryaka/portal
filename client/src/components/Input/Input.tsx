@@ -1,9 +1,15 @@
 import { Props } from "./Input.props"
+import cn from "classnames"
 
-const Input = ({ placeholder }: Props) => {
+
+const Input = ({ placeholder, className, ...props }: Props) => {
   return(
     <>
-      <input className='border-b-[1px] mb-[15px] p-[10px] focus:outline-none' type="text" placeholder={placeholder} />
+      <input 
+        className={cn('border-b-[1px] p-[10px] focus:outline-none', className, {...props})}  
+        type="text" 
+        placeholder={placeholder} 
+      />
     </>
   )
 }
