@@ -1,19 +1,56 @@
-import Form from '@/components/Form/Form'
-import Link from 'next/link'
+'use client';
 
-const SignUp = () => {
-  return(
-    <>
-      <div className='w-[100%] h-[100vh] flex flex-col items-center justify-center'>
-        <h1 className='mb-[40px] text-[30px] text-[white]'>Регистрация</h1>
-        <Form page='signup'/>
-        <div className='text-[white]'>
-          <Link href="/signin">Вход</Link>
-          <Link href="/"> | Главная</Link>
-        </div>
+import { useActionState } from 'react';
+import { signUp } from '@/app/acrions/auth';
+
+const initialState = { error: '' };
+
+const signUpPage = () => {
+  const [state, formAction] = useActionState(signUp, initialState);
+
+  return (
+    <form action={formAction} className="space-y-4">
+      <div>
+        <label htmlFor="signup-email" className="block text-sm font-medium">
+          Email
+        </label>
+        <input
+          id="signup-email"
+          name="email"
+          type="email"
+          required
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+        />
       </div>
-    </>
-  )
+
+      <div>
+        <label htmlFor="signup-password" className="block text-sm font-medium">
+          Password (min 6 characters)
+        </label>
+        <input
+          id="signup-password"
+          name="password"
+          type="password"
+          required
+          minLength={6}
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+        />
+      </div>
+
+      {state?.error && (
+        <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
+          {state.error}
+        </div>
+      )}
+
+      <button
+        type="submit"
+        className="w-full rounded-md bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+      >
+        Sign Up
+      </button>
+    </form>
+  );
 }
 
-export default SignUp
+export default signUpPage
