@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import Form from "@/components/customs/form";
 
 async function UserDetails() {
   const supabase = await createClient();
@@ -16,7 +17,7 @@ export default function ProtectedPage() {
   return (
     <div className="flex-1 w-full flex flex-col gap-12">
       <div className="w-full">
-
+        <Form />
       </div>
     </div>
   );
