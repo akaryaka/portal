@@ -1,4 +1,4 @@
-import createClient from "@/app/utils/supabase/server";
+import { createClient } from "@/app/utils/supabase/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
@@ -16,15 +16,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (user && !request.nextUrl.pathname.startsWith('/login')) {
+  if (user && request.nextUrl.pathname.startsWith('/login')) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  return response
+  return response;
 }
 
-// export const config = {
-//   matcher: {
-
-//   }
-// }
+export const config = {
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
+};

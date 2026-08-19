@@ -1,7 +1,16 @@
+'use client'
+
+import { useActionState } from 'react';
+import { signIn } from '@/app/actions/auth';
+
+const initialState = { error: '' };
+
 const Login = () => {
+  const [state, formAction] = useActionState(signIn, initialState);
+  
   return (
     <>
-      <form action='/' className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <div>
           <label htmlFor="signup-email" className="block text-sm font-medium">
             Email
@@ -28,6 +37,11 @@ const Login = () => {
             className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
           />
         </div>
+           {state?.error && (
+        <div className="text-red-600 text-sm bg-red-50 p-3 rounded-md">
+          {state.error}
+        </div>
+      )}
 
         <button
           type="submit"
@@ -36,6 +50,9 @@ const Login = () => {
           login
         </button>
       </form>
+      {/* <form action={signOut}>
+        <button type="submit">выйти</button>
+        </form> */}
     </>
   )
 }

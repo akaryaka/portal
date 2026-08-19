@@ -1,14 +1,12 @@
+import { signOut } from "./actions/auth";
+
 export default function Page() {
-
-
-  // const { data: todos } = await supabase.from('todos').select()
-
-  // console.log(supabase);
-  
-
   return (
     <>
      <h1>home</h1>
+     <form action={signOut}>
+      <button type="submit">выйти</button>
+     </form>
     </>
   )
 }

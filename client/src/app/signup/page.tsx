@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { signUp } from '@/app/acrions/auth';
+import { signUp } from '@/app/actions/auth';
 
 const initialState = { error: '' };
 
