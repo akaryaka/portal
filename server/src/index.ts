@@ -6,6 +6,8 @@ import { db } from "./config/db.ts";
 const app = express();
 const port = 3000;
 
+const JWT_SECRET = 'very-very-very-secret-omg';
+
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
@@ -13,18 +15,43 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post('/auth/signup', (req, res) => {
-  const { firstname, lastname, login, password } = req.body;
+  console.log(req.body);
+  
+  // const { firstname, lastname, login, password } = req.body;
+  // const password__hash = bcrypt.hashSync(password, 10);
 
-  if(!login) return res.status(400).json({error: 'поле title пустое'});
+  // const sql = 'INSERT INTO users (firstname, lastname, login, password) VALUES (?,?,?,?)';
 
-  const sql = 'INSERT INTO users (firstname, lastname, login, password) VALUES (?,?,?,?)';
+  // db.run(sql, [firstname,lastname,login,password__hash], (err: Error) => {
+  //   if (err) return res.status(500).json({error: 'не удалось зарегистрировать пользователя'});
 
-  db.run(sql, [firstname,lastname,login,password], (err: Error) => {
-    if (err) return res.status(500).json({error: 'не удалось зарегистрировать пользователя'});
+  //   res.status(200).json({
+  //     message: 'Пользователь зарегистрирован',
+  //     users: [firstname,lastname,login,password__hash]
+  //   })
+  // })
+})
 
-    res.status(200).json({
-      message: 'Пользователь зарегистрирован',
-      users: [firstname,lastname,login,password]
+app.post('/auth/login', (req, res) => {
+
+  // console.log(req.body);
+  
+  const { login, password } = req.body;
+
+  db.get('SELECT id, login, password FROM users WHERE login = ?', [login], (err, user: any) => {
+    if (err) return res.status(500).json({error: err});
+    if (!login) return res.status(401).json({err: 'Неверный логин или пароль'});
+
+    const ok = bcrypt.compareSync(password, user.password);
+    if (!ok) return res.status(401).json({error: 'Неверный логин или пароль'});
+
+    const token = jwt.sign({
+      id: user.id,
+      login: user.login
+    }, JWT_SECRET, {expiresIn: '7d'});
+
+    res.json({
+      token
     })
   })
 })
