@@ -1,4 +1,6 @@
 import express, { type Request, type Response } from "express";
+import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
 import { db } from "./config/db.ts";
 
 const app = express();
@@ -30,3 +32,20 @@ app.post('/auth/signup', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+const shutdown = () => {
+  console.log('stop server');
+  
+  db.close(err => {
+    if (err) {
+      console.error('не получилось закрыть бд');
+      process.exit(1);
+    } else {
+      console.log('бд закрыта');
+      process.exit(0)
+    }
+  })
+}
+
+process.on('SIGINT', shutdown);
+process.off('SIGTERM', shutdown);
