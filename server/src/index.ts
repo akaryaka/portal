@@ -69,16 +69,30 @@ app.get('/me', authenticate, (req: Request, res: Response) => {
   db.get('SELECT id, login, created_at FROM users WHERE id = ?', [req.user.id], (err, user) => {
     if (err) return res.status(500).json({error: 'Не удалось получить пользователя'});
     if (!user) return res.status(404).json({error: 'Пользователь не найден'});
-
     
-    res.json({user})
+    res.json({user});
   });
   
 })
 
+
+// crud
 app.post('/posts', authenticate, (req, res) => {
-  console.log(req.body);
+  const { title, desc, link, user_id } = req.body;
+  // console.log(title);
   
+  if(!title) return res.status(400).json({error: 'Поле title пустое'})
+
+  const sql = 'INSERT INTO posts (title) VALUES (?)';
+  
+  db.run(sql, [title, desc, link, req.user.id], (err) => {
+    if (err) return res.status(500).json({error: err.message});
+    // console.error("Ошибка базы данных:", err.message); 
+    // res.json(201).json({
+    //   message: 'Задача успешно создана',
+    //   title: title
+    // })
+  })
 })  
 
 app.listen(port, () => {
