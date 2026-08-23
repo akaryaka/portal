@@ -14,6 +14,9 @@ db.serialize(() => {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+  // db.run(`
+  //   DROP TABLE posts;
+  // `)
 
   db.run(`
     CREATE TABLE IF NOT EXISTS posts (
@@ -21,8 +24,8 @@ db.serialize(() => {
       title TEXT NOT NULL,
       desc TEXT,
       link TEXT,
-      created_at TEXT NOT NULL DEFAULT (datetime('now')),
       user_id INTEGER,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')), 
       FOREIGN KEY (user_id) REFERENCES users (id)
     )
   `);

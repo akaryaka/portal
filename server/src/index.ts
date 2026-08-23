@@ -78,20 +78,22 @@ app.get('/me', authenticate, (req: Request, res: Response) => {
 
 // crud
 app.post('/posts', authenticate, (req, res) => {
-  const { title, desc, link, user_id } = req.body;
-  // console.log(title);
-  
+  const { title, desc, link } = req.body;
+ 
   if(!title) return res.status(400).json({error: 'Поле title пустое'})
 
-  const sql = 'INSERT INTO posts (title) VALUES (?)';
+  // console.log(title, desc, link);
+  // console.log(req.user.id);
+  
+  const sql = 'INSERT INTO posts (title, desc, link, user_id) VALUES (?,?,?,?)';
   
   db.run(sql, [title, desc, link, req.user.id], (err) => {
     if (err) return res.status(500).json({error: err.message});
     // console.error("Ошибка базы данных:", err.message); 
-    // res.json(201).json({
-    //   message: 'Задача успешно создана',
-    //   title: title
-    // })
+    res.json(201).json({
+      message: 'Задача успешно создана',
+      title: title
+    })
   })
 })  
 
