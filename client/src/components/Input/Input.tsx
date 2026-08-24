@@ -1,7 +1,6 @@
 import { Props } from "./Input.props"
 import cn from "classnames"
 
-
 const Input = ({ placeholder, className, ...props }: Props) => {
   return(
     <>

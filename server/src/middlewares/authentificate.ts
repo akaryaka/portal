@@ -2,7 +2,7 @@ import { type Response } from "express";
 import { type Posts } from "../@types/index.ts";
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_SECRET = "very-very-very-secret-omg";
 
 export function authenticate(req: Posts, res: Response, next: any) {
   const authHeader = req.headers.authorization || '';

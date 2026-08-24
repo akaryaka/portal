@@ -1,14 +1,16 @@
-import { type Request, type Response } from "express";
+import  {type Express, type Request, type Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { db } from "../config/db.ts";
 import { authenticate } from "../middlewares/authentificate.ts";
 import { type Posts } from "../@types/index.ts";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_SECRET = "very-very-very-secret-omg";
 
-export const routes = (app: any) => {
+export const routes = (app: Express) => {
   app.post('/auth/signup', (req: Request, res: Response) => {
+    
+    
     const { firstname, lastname, login, password } = req.body;
     const password__hash = bcrypt.hashSync(password, 10);
     const sql = 'INSERT INTO users (firstname, lastname, login, password) VALUES (?,?,?,?)';
@@ -20,6 +22,14 @@ export const routes = (app: any) => {
         message: 'Пользователь зарегистрирован',
         users: [firstname, lastname, login, password__hash]
       })
+    })
+  })
+
+  app.get('/users', (req: Request, res: Response) => {
+    const sql = 'SELECT id, login, password FROM users';
+    db.all(sql, [req.params.login], (err, users) => {
+      if(err) return res.status(500).json({error: err})
+      res.json(users);
     })
   })
 
@@ -70,7 +80,24 @@ export const routes = (app: any) => {
     })
   })  
 
-  app.get('/posts', authenticate, (req: Request, res: Response) => {
+  app.get('/posts', authenticate, (req: Posts, res: Response) => {  
+    const sql = 'SELECT id, title, desc, link, user_id FROM posts WHERE user_id = ?';
 
-  })
+    db.all(sql, [req.user.id], (err, posts) => {
+      if (err) return res.status(500).json({error: 'Не удалось получить задачи'});
+      res.json(posts);
+    });
+  });
+
+  // получаем пост по id
+  app.get('/posts/:id', authenticate, (req: Posts, res: Response) => {
+    
+    const { id } = req.params;
+    const sql = 'SELECT id, title, desc, link, user_id FROM posts WHERE id = ? AND user_id = ?';
+
+    db.get(sql, [id, req.user.id], (err, task) => {
+      if (err) return res.status(500).json({error: 'Не удалось получить задачи'});
+      res.json(task);
+    });
+  });
 }
