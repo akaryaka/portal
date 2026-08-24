@@ -14,9 +14,6 @@ db.serialize(() => {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
-  // db.run(`
-  //   DROP TABLE posts;
-  // `)
 
   db.run(`
     CREATE TABLE IF NOT EXISTS posts (
